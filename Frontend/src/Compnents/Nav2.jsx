@@ -5,7 +5,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import Settings from "./SettingCard";
 import WishList from "../Compnents/WishListPage";
 import { Notify } from "../ContextApi/Context";
-import Notii from "./Notification.JSX";
+import Notii from "../Compnents/Notification";
 import SetUserInfo from "../../Functions/Updatethedatabackend";
 import getCookie from "../../Functions/getthetoken";
 import { useSelector, useDispatch } from "react-redux";
