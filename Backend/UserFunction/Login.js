@@ -41,7 +41,8 @@ async function Login(req, resp) {
     resp.cookie("token", token, {
       httpOnly: true, // safer, prevents JS access
       secure: isProduction, // true only on HTTPS
-      sameSite: isProduction ? "None" : "Lax", // "None" for cross-site in prod
+      // sameSite: isProduction ? "None" : "Lax", // "None" for cross-site in prod
+      sameSite: "None",
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 
