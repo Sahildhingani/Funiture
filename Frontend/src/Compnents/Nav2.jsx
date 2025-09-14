@@ -24,7 +24,6 @@ function Nav2() {
   const dispatch = useDispatch();
 
   const token = getCookie("token");
-  console.log(token);
 
   async function GetUserDataBackend(tok) {
     const data = await VerifyToken(tok);
@@ -80,6 +79,15 @@ function Nav2() {
       cnt1 = User.UserOrderList?.length || 0;
     }
   }
+
+  // useEffect(()=>{
+  //   checkValidation();
+  // },[])
+
+  // // validation request check 
+  // async function checkValidation() {
+  //   const data=axios.post('http://localhost:5000/User/check');
+  // }
 
   return (
     <>

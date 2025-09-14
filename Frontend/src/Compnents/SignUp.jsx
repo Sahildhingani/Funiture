@@ -42,6 +42,7 @@ function Signup() {
       const data = await axios.get(`${import.meta.env.VITE_BACKEND_API}/User/SendMail`, {
         params: { UserEmail },
       });
+      console.log(data.status);
       if (data.status === 200) {
         setShowPopup(true);
       }

@@ -6,7 +6,7 @@ function Nav1(){
     return (
         <>
             {/* // top green portion  */}
-            <div className=" hidden lg:flex bg-gray-900 h-16 justify-between pt-2 pl-15 pr-15 flex-wrap mb-2 pb-2">
+            <div className=" hidden lg:flex bg-gray-900 h-10 justify-between pt-2 pl-15 pr-15 flex-wrap mb-2 pb-2">
                 <div className="flex gap-8">
                     <Link className="text-gray-400 font-serif">Showroom</Link>
                     <Link className="text-gray-400 font-serif">Custom Work</Link>

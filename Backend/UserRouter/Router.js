@@ -24,6 +24,8 @@ const HandleForgetPass=require('../UserFunction/ForgotPass');
 const VerifyForgetCode=require('../UserFunction/VerifyForgetPass');
 const ResetPassword=require('../UserFunction/ResetPass');
 const GoogleLogin=require('../UserFunction/GoogelLogin');
+const Validation=require('../UserFunction/Validation');
+
 
 Router.get('/SendMail',SendEmail);
 Router.get('/UserData',UserData);
@@ -51,6 +53,8 @@ Router.get('/PlacedOrderDetail',PlacedOrderDetail);
 
 // google router 
 Router.post('/googleLogin',GoogleLogin);
+
+Router.post('/check',Validation);
 
 // forget password 
 Router.post('/ForgetPass',HandleForgetPass);

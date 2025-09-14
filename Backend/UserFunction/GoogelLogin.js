@@ -21,10 +21,10 @@ function SendTheToken(user, resp) {
     );
 
     resp.cookie("token", token, {
-      httpOnly: false, // safer to use httpOnly
-      secure: true,
-      sameSite: none,
-      maxAge: 60 * 60 * 1000,
+      httpOnly: false,
+      secure: true, // must be true on HTTPS
+      sameSite: "None", // required for cross-site
+      maxAge: 60 * 60 * 1000, // 1 hour
     });
 
     return resp.status(200).json({

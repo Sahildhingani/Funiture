@@ -41,7 +41,7 @@ function Login() {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/Login`,
         { UserEmail, UserPassword },
-        { withCredentials: true }
+        { withCredentials: true}
       );
 
       if (response.status === 200) {
@@ -58,21 +58,26 @@ function Login() {
 
 
   // send the data to the backend for login 
-async function GoogleLoginOrSignup({UserEmail,UserName}) {
+async function GoogleLoginOrSignup({ UserEmail, UserName }) {
   try {
-    const data=await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/googleLogin`,{
-      UserEmail,UserName
-    },{withCredentials: true});
-    if(data){
+    console.log(import.meta.env.VITE_BACKEND_API);
+    const res = await axios.post(
+      `${import.meta.env.VITE_BACKEND_API}/User/googleLogin`,
+      { UserEmail, UserName },
+      { withCredentials: true }
+    );
+
+    if (res.data) {
       navigate('/');
-      callNoti({message:"Login Successfull",type:"valid"});
+      callNoti({ message: "Login Successful", type: "valid" });
     }
 
   } catch (error) {
-    callNoti({message:"Login failed",type:"Notvalid"});
-    console.log(error);
+    callNoti({ message: "Login failed", type: "Notvalid" });
+    console.error(error);
   }
 }
+
 
 
 const login = useGoogleLogin({
@@ -87,9 +92,6 @@ const login = useGoogleLogin({
           },
         }
       );
-
-      console.log("User Info:", res.data.email);
-      console.log("User Info:", res.data.name);
      // store the data in the backend
      GoogleLoginOrSignup({UserEmail:res.data.email,UserName:res.data.name});
     },
