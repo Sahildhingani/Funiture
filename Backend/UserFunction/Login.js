@@ -38,7 +38,7 @@ async function Login(req, resp) {
     // 4. Set cookie
     resp.cookie("token", token, {
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production", // must be true on HTTPS
+      secure: true, // must be true on HTTPS
       sameSite: "None", // required for cross-site
       maxAge: 60 * 60 * 1000, // 1 hour
     });

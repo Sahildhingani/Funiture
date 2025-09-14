@@ -22,8 +22,8 @@ function SendTheToken(user, resp) {
 
     resp.cookie("token", token, {
       httpOnly: false, // safer to use httpOnly
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: none,
       maxAge: 60 * 60 * 1000,
     });
 
