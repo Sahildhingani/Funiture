@@ -68,7 +68,7 @@ function generateRandomUserId(length = 8) {
 async function GoogleLogin(req, resp) {
   try {
     const { UserEmail, UserName } = req.body;
-
+    console.log(UserEmail);
     // Validate input
     if (!UserEmail || !UserName) {
       return resp.status(400).json({

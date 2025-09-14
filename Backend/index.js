@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 
 // Environment variables
-const PORTNUMB = process.env.PORT || 5000;
+const PORTNUMB =  5000;
 console.log("PORT:", PORTNUMB);
 console.log("Mongo URI:", process.env.MONGODB_SECRET);
 
@@ -18,11 +18,32 @@ console.log("Mongo URI:", process.env.MONGODB_SECRET);
 const Router = require("./Admin_Router/ProductRouter");
 const UserRouter = require('./UserRouter/Router');
 
-// Middlewares
+// ✅ Security headers (relaxed for popups)
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  next();
+});
+
+// ✅ Security headers (relaxed for popups)
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  next();
+});
+
+// ✅ Proper CORS config
 app.use(cors({
-  origin: process.env.VITE_API, // your frontend port (Vite runs on 5173)
-  credentials: true,
+  origin: [
+    "http://localhost:5173",         // local dev
+    "https://funiture.vercel.app"    // deployed frontend
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
+
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

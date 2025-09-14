@@ -64,7 +64,7 @@ async function GoogleLoginOrSignup({UserEmail,UserName}) {
       UserEmail,UserName
     },{withCredentials: true});
     if(data){
-      navigate('/');''
+      navigate('/');
       callNoti({message:"Login Successfull",type:"valid"});
     }
 
@@ -77,7 +77,6 @@ async function GoogleLoginOrSignup({UserEmail,UserName}) {
 
 const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("Google Token:", tokenResponse);
 
       // Fetch user profile from Google
       const res = await axios.get(

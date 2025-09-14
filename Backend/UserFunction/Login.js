@@ -8,7 +8,7 @@ async function Login(req, resp) {
   try {
     // Use body instead of query (standard for login forms)
     const { UserEmail, UserPassword } = req.body;
-
+    
     // 1. Check if user exists
     const user = await UserModel.findOne({ UserEmail });
     if (!user) {
