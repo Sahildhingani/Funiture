@@ -35,14 +35,11 @@ async function Login(req, resp) {
       { expiresIn: "1h" }
     );
 
-    // 4. Cookie options (different for dev vs prod)
-    const isProduction = process.env.NODE_ENV === "production";
-
+    // 4. Set cookie
     resp.cookie("token", token, {
-      httpOnly: true, // safer, prevents JS access
-      secure: isProduction, // true only on HTTPS
-      // sameSite: isProduction ? "None" : "Lax", // "None" for cross-site in prod
-      sameSite: "None",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // must be true on HTTPS
+      sameSite: "None", // required for cross-site
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 
