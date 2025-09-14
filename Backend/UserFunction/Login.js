@@ -6,9 +6,8 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 async function Login(req, resp) {
   try {
-    // Use body instead of query (standard for login forms)
     const { UserEmail, UserPassword } = req.body;
-    
+
     // 1. Check if user exists
     const user = await UserModel.findOne({ UserEmail });
     if (!user) {
@@ -21,36 +20,39 @@ async function Login(req, resp) {
       return resp.status(400).json({ msg: "Password or email is wrong" });
     }
 
-    // 3. Generate JWT (only safe fields)
+    // 3. Generate JWT
     const token = jwt.sign(
-      { id: user._id.toString(),   // MongoDB internal ID
-        UserId: user.UserId,       // Your custom user ID
+      {
+        id: user._id.toString(),
+        UserId: user.UserId,
         UserName: user.UserName,
         UserEmail: user.UserEmail,
-        // If needed, include these too:
         UserWishList: user.UserWishList,
         UserOrderes: user.UserOrderes,
-        UserRole:user.UserRole,
-        },
-      process.env.JWT_SECRET,
+        UserRole: user.UserRole,
+      },
+      SECRET_KEY,
       { expiresIn: "1h" }
     );
 
-    // 4. Send token in cookie
+    // 4. Cookie options (different for dev vs prod)
+    const isProduction = process.env.NODE_ENV === "production";
+
     resp.cookie("token", token, {
-      httpOnly: false, // protects from XSS
-      secure: false, // true in prod (HTTPS)
-      sameSite: "lax",
+      httpOnly: true, // safer, prevents JS access
+      secure: isProduction, // true only on HTTPS
+      sameSite: isProduction ? "None" : "Lax", // "None" for cross-site in prod
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 
     // 5. Final response
-    return resp.status(200).json({ msg: "Login successful",UserRole:user.UserRole });
+    return resp.status(200).json({
+      msg: "Login successful",
+      UserRole: user.UserRole,
+    });
   } catch (error) {
     console.error(error);
-    return resp
-      .status(500)
-      .json({ msg: "Error in login", error: error.message });
+    return resp.status(500).json({ msg: "Error in login", error: error.message });
   }
 }
 
