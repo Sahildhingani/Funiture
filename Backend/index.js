@@ -9,9 +9,6 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// Environment variables
-const PORTNUMB =  5000;
-console.log("PORT:", PORTNUMB);
 console.log("Mongo URI:", process.env.MONGODB_SECRET);
 
 // Routers
@@ -59,6 +56,6 @@ app.use("/Admin", Router);
 app.use("/User", UserRouter);
 
 // Start server
-app.listen(PORTNUMB, () => {
-  console.log(`Server Started at http://localhost:${PORTNUMB}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server Started at http://localhost:${process.env.PORT}`);
 });
