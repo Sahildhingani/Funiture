@@ -22,13 +22,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ Security headers (relaxed for popups)
-app.use((req, res, next) => {
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
-  next();
-});
-
 // ✅ Proper CORS config
 app.use(cors({
   origin: [
