@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 app.use(cors({
   origin: [
     "http://localhost:5173",         // local dev
-    "https://funiture.vercel.app"    // deployed frontend
+    "https://funiture-psi.vercel.app/Shop"    // deployed frontend
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
