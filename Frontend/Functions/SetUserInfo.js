@@ -15,6 +15,8 @@ async function getverify({token}) {
   }
 }
 
+export default getverify;
+
 
 // get the cookie and then verify it and store in reduxer 
 
