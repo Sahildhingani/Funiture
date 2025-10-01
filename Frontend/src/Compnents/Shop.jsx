@@ -21,6 +21,7 @@ function Shop() {
       setLoading(true);
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/Admin/getitems`, {
         params: { page: currentPage, limit: 10, query },
+         withCredentials: true,
       });
 
       const newData = res.data.Data;
