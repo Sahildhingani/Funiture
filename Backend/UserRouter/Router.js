@@ -29,10 +29,14 @@ const Validation=require('../UserFunction/Validation');
 
 Router.get('/SendMail',SendEmail);
 Router.get('/UserData',UserData);
+// jwt realted work
 Router.post('/VerifyCode',Verifythecode);
-Router.post('/SignUp',SignUp);
-Router.post('/Login',Login);
 Router.post('/VerifyJWT',verifyJWT);
+// authenticatation
+Router.post('/SignUp',SignUp); // working checked 
+Router.post('/Login',Login); // checked Working
+
+
 Router.post('/WishListAddItem',Additemtowishlist);
 Router.post('/GetWishList',GetWishListItems);
 Router.post('/RemoveWishListItem',RemoveWishItems);

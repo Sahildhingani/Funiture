@@ -15,16 +15,16 @@ console.log("Mongo URI:", process.env.MONGODB_SECRET);
 const Router = require("./Admin_Router/ProductRouter");
 const UserRouter = require('./UserRouter/Router');
 
-// ✅ Security headers (relaxed for popups)
+
 app.use((req, res, next) => {
+  console.log("get a call on a backend ");
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
   next();
 });
-
+// 
 // ✅ Proper CORS config
 app.use(cors({
-  origin: [
+  origin:[
     "http://localhost:5173",         // local dev
     "https://funiture-psi.vercel.app"    // deployed frontend
   ],
@@ -44,7 +44,7 @@ mongoose
   .then(() => console.log("Mongodb Connected Successfully"))
   .catch((err) => console.log("MongoDb error", err));
 
-// Routes
+
 app.use("/Admin", Router);
 app.use("/User", UserRouter);
 

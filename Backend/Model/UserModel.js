@@ -33,6 +33,7 @@ const UserSchema = mongoose.Schema({
   },
   UserVerified: {
     type: Boolean,
+    default:false,
   },
   UserOrderes: {
     type: [OrderItemSchema],
