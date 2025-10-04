@@ -33,8 +33,8 @@ Router.get('/UserData',UserData);
 Router.post('/VerifyCode',Verifythecode);
 Router.post('/VerifyJWT',verifyJWT);
 // authenticatation
-Router.post('/SignUp',SignUp); // working checked 
-Router.post('/Login',Login); // checked Working
+Router.post('/SignUp',SignUp);
+Router.post('/Login',Login); 
 
 
 Router.post('/WishListAddItem',Additemtowishlist);
