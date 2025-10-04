@@ -15,33 +15,33 @@ console.log("Mongo URI:", process.env.MONGODB_SECRET);
 const Router = require("./Admin_Router/ProductRouter");
 const UserRouter = require('./UserRouter/Router');
 
-
-app.use((req, res, next) => {
-  console.log("get a call on a backend ");
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-  next();
-});
-// 
-// ✅ Proper CORS config
+// ✅ Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
   "https://funiture-pi.vercel.app"
 ];
 
+// ✅ Proper CORS setup
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow Postman & server-to-server calls
+    console.log("Origin trying to access backend:", origin);
+
+    // Allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
-      return callback(new Error("Not allowed by CORS"));
+      return callback(null, false); // don’t throw error, just reject
     }
   },
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
+// ✅ Handle preflight requests
+app.options("*", cors());
 
 // Middlewares
 app.use(express.json());
@@ -54,7 +54,7 @@ mongoose
   .then(() => console.log("Mongodb Connected Successfully"))
   .catch((err) => console.log("MongoDb error", err));
 
-
+// Routers
 app.use("/Admin", Router);
 app.use("/User", UserRouter);
 
@@ -62,3 +62,4 @@ app.use("/User", UserRouter);
 app.listen(process.env.PORT, () => {
   console.log(`Server Started at http://localhost:${process.env.PORT}`);
 });
+
