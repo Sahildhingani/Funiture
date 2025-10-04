@@ -29,8 +29,8 @@ function Nav2() {
     const data = await VerifyToken(tok);
     const UserEmail = data.UserEmail;
     const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/User/UserData`, {
-      params: { UserEmail },
-    });
+      params: { UserEmail },withCredentials: true
+    },);
     return response.data.UserData;
   }
 

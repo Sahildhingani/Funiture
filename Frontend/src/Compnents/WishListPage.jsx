@@ -20,7 +20,7 @@ function WishList({ close, setclose }) {
     try {
       const data = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/GetWishList`, {
         WishListData: state,
-      });
+      },{withCredentials: true});
       if (data.status === 200) {
         setitems(data.data);
         setloading(false);

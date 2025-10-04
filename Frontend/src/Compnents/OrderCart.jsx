@@ -26,7 +26,7 @@ function OrderCart() {
       const { status } = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/IncreaseCnt`, {
         ProductId,
         UserEmail,
-      });
+      },{withCredentials: true});
       if (status === 200) dispatch(IncreaseTheCount({ ProductId }));
     } catch (error) {
       console.error("Increment Error:", error);
@@ -39,7 +39,7 @@ function OrderCart() {
       const { status } = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/DecreaseCnt`, {
         ProductId,
         UserEmail,
-      });
+      },{withCredentials: true});
       if (status === 200) dispatch(DecreaseTheCount({ ProductId }));
     } catch (error) {
       console.error("Decrement Error:", error);
@@ -51,7 +51,7 @@ function OrderCart() {
     try {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/GetOrderData`, {
         OrderList: cartItems,
-      });
+      },{withCredentials: true});
 
       if (res.status === 200) {
         const merged = res.data.map((item) => {

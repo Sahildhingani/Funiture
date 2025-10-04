@@ -21,7 +21,7 @@ function Home() {
       setIsLoading(true);
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/Admin/getitems`, {
         params: { MostSelling: true, page: 1, limit: 10 },
-      });
+      },{ withCredentials: true});
       setMostSellingItems(res.data.Data);
     } catch (error) {
       console.error("Error fetching products:", error.message);

@@ -28,7 +28,7 @@ function OrderCartComponent({
       const data = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/RemoveItemFromCart`, {
         ProductId,
         UserEmail,
-      });
+      },{withCredentials: true});
       if (data.status === 200) {
         dispatch(RemoveItemFromTheCart({ ProductId }));
       }

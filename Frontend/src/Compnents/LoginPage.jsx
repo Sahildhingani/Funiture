@@ -85,13 +85,14 @@ const login = useGoogleLogin({
 
       // Fetch user profile from Google
       const res = await axios.get(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-          },
-        }
-      );
+  "https://www.googleapis.com/oauth2/v3/userinfo",
+  {
+    headers: {
+      Authorization: `Bearer ${tokenResponse.access_token}`,
+    },
+    withCredentials: true // ✅ now correctly included
+  }
+);
      // store the data in the backend
      GoogleLoginOrSignup({UserEmail:res.data.email,UserName:res.data.name});
     },
@@ -109,7 +110,7 @@ const login = useGoogleLogin({
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/ForgetPass`,
-        { UserEmail }
+        { UserEmail },{ withCredentials: true}
       );
 
       if (response.status === 200) {
@@ -136,7 +137,7 @@ const login = useGoogleLogin({
         `${import.meta.env.VITE_BACKEND_API}/User/ForgetCodeVerify`,
         {
           params: { UserEmail, code },
-        }
+        },{ withCredentials: true}
       );
       if (data.status == 200) {
         callNoti({ message: "Correct code", type: "valid" });
@@ -154,7 +155,7 @@ const login = useGoogleLogin({
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/ResetPassword`, {
         UserEmail,
         newPassword,
-      });
+      },{ withCredentials: true});
       if (res.status === 200) {
         callNoti({ message: "Password updated successfully", type: "valid" });
         setShowForgot(false);

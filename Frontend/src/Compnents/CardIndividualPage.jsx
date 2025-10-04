@@ -22,7 +22,7 @@ function CardIndividualComponent() {
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_BACKEND_API}/Admin/GetIndividualItem`,
-          { params: { id } }
+          { params: { id } },{ withCredentials: true}
         );
         setProduct(data.data);
       } catch (error) {
@@ -38,7 +38,7 @@ function CardIndividualComponent() {
       try {
         const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_API}/Admin/getitems`, {
           params: { page: 1, limit: 10, query: ProductCatogery }
-        });
+        },{ withCredentials: true});
         setRelatedData(data.Data || []);
       } catch (error) {
         console.log(error);
@@ -57,7 +57,7 @@ function CardIndividualComponent() {
       const { status } = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/AddtoCard`, {
         UserEmail,
         ProductId: id,
-      });
+      },{ withCredentials: true});
 
       if (status === 200) {
         dispatch(AddToCardItem({ ProductId: id }));
@@ -75,7 +75,7 @@ function CardIndividualComponent() {
       const { status } = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/WishListAddItem`, {
         UserEmail,
         ProductId: id,
-      });
+      },{ withCredentials: true});
 
       if (status === 200) {
         dispatch(AddItemInWishList({ ProductId: id }));

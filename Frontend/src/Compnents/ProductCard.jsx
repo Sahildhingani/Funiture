@@ -34,7 +34,7 @@ function Card({
       }
       const data = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/WishListAddItem`,
-        { ProductId: id, UserEmail }
+        { ProductId: id, UserEmail },{withCredentials: true}
       );
       if (data.status === 200) {
         dispatch(AddItemInWishList({ ProductId: id }));
@@ -52,7 +52,7 @@ function Card({
     try {
       const data = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/RemoveWishListItem`,
-        { ProductId, UserEmail }
+        { ProductId, UserEmail },{withCredentials: true}
       );
       if (data.status === 200) {
         dispatch(RemoveItemWishList({ ProductId: id }));
@@ -70,7 +70,7 @@ function Card({
       }
       const data = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/AddtoCard`,
-        { UserEmail, ProductId }
+        { UserEmail, ProductId },{withCredentials: true}
       );
       if (data.status === 200) {
         dispatch(AddToCardItem({ ProductId: id }));

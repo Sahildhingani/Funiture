@@ -60,7 +60,9 @@ function Address() {
       UserPhone: phone,
       UserAddress: address,
       OrderDetail: orderItems,
-    });
+    },{
+  withCredentials: true
+});
 
     if (data.status === 200) {
       const id = data.data._id;
@@ -77,7 +79,9 @@ function Address() {
       const UserData = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/GetAndUpdateUser`, {
         UserEmail,
         id,
-      });
+      },{
+  withCredentials: true
+});
       if (UserData.status === 200) return UserData;
     } catch (error) {
       console.log(error);
@@ -88,7 +92,9 @@ function Address() {
     try {
       const data = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/ClearOrderListOfUser`, {
         UserEmail,
-      });
+      },{
+  withCredentials: true
+});
       if (data.status === 200) return data;
     } catch (error) {
       console.log(error);
@@ -100,7 +106,9 @@ function Address() {
       const { UserEmail } = await VerifyToken(tok);
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/User/UserData`, {
         params: { UserEmail },
-      });
+      },{
+  withCredentials: true
+});
       return response.data.UserData.UserOrderes || [];
     } catch (error) {
       console.log(error);
@@ -111,7 +119,9 @@ function Address() {
     try {
       const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/GetOrderData`, {
         OrderList: orderList,
-      });
+      },{
+  withCredentials: true
+});
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error("GetProductData error:", error);

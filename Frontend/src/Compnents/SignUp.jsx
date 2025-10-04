@@ -24,7 +24,7 @@ function Signup() {
     try {
       const data = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/VerifyCode`, {
         body: { UserEmail, UserCode },
-      });
+      },{withCredentials: true});
 
       if (data.status === 200) {
         setShowPopup(false);
@@ -41,7 +41,7 @@ function Signup() {
       setLoadingVerify(true);
       const data = await axios.get(`${import.meta.env.VITE_BACKEND_API}/User/SendMail`, {
         params: { UserEmail },
-      });
+      },{withCredentials: true});
       console.log(data.status);
       if (data.status === 200) {
         setShowPopup(true);
@@ -61,7 +61,7 @@ function Signup() {
         UserName,
         UserEmail,
         UserPassword,
-      });
+      },{withCredentials: true});
 
       if (data.status === 200) {
         setTimeout(() => {

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Notify } from "../ContextApi/Context";
-
+import axios from "axios";
 function LocationPicker({ address, setaddress }) {
   const [loading, setLoading] = useState(false);
   const { dark } = useContext(Notify);
@@ -18,9 +18,16 @@ function LocationPicker({ address, setaddress }) {
         const { latitude, longitude } = position.coords;
 
         try {
-          const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${import.meta.env.VITE_MAP_API_KEY}`
-          );
+          const response = await axios.get(
+  `https://maps.googleapis.com/maps/api/geocode/json`,
+  {
+    params: {
+      latlng: `${latitude},${longitude}`,
+      key: import.meta.env.VITE_MAP_API_KEY
+    },
+    withCredentials: true // ✅ include cookies if needed
+  }
+);
 
           const data = await response.json();
 
