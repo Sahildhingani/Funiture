@@ -38,9 +38,9 @@ async function Login(req, resp) {
     // 4. Set cookie
     resp.cookie("token", token, {
       httpOnly: false,
-      secure: true, // must be true on HTTPS
-      sameSite: "None", // required for cross-site
-      maxAge: 60 * 60 * 1000, // 1 hour
+  secure: false,   // temporarily false for local dev (HTTPS not required)
+  sameSite: "Lax", // or "None" if cross-site
+  maxAge: 60 * 60 * 1000
     });
     // 5. Final response
     return resp.status(200).json({
