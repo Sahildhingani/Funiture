@@ -23,15 +23,25 @@ app.use((req, res, next) => {
 });
 // 
 // ✅ Proper CORS config
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://funiture-pi.vercel.app"
+];
+
 app.use(cors({
-  origin:[
-    "http://localhost:5173",         // local dev
-    "https://funiture-pi.vercel.app",
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow Postman & server-to-server calls
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
 
 // Middlewares
 app.use(express.json());
