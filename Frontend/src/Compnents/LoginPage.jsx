@@ -13,20 +13,20 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
-  const [step, setStep] = useState("email"); 
+  const [step, setStep] = useState("email");
   const [code, setCode] = useState("");
   const [timer, setTimer] = useState(0);
   const [newPassword, setNewPassword] = useState("");
 
   const navigate = useNavigate();
   const { callNoti } = useContext(Notify);
-  const UserEmail=useSelector((s)=>(s.User.UserEmail));
+  const UserEmail = useSelector((s) => s.User.UserEmail);
   // check login
   useEffect(() => {
-  if (UserEmail) {
-    navigate("/");
-  }
-}, [UserEmail, navigate]);
+    if (UserEmail) {
+      navigate("/");
+    }
+  }, [UserEmail, navigate]);
 
   useEffect(() => {
     if (showForgot) document.body.style.overflow = "hidden";
@@ -51,10 +51,10 @@ function Login() {
     return response.data.UserData;
   }
 
-   async function getdata() {
-        const data1 =  GetUserDataBackend();
-         dispatch(SetUserInfoComplete(data1));
-      }
+  async function getdata() {
+    const data1 = GetUserDataBackend();
+    dispatch(SetUserInfoComplete(data1));
+  }
   async function HandleLogin({ UserEmail, UserPassword }) {
     try {
       if (!UserEmail || !UserPassword) {
@@ -62,19 +62,19 @@ function Login() {
       }
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/Login`,
-        { UserEmail, UserPassword },{withCredentials:true}
+        { UserEmail, UserPassword },
+        { withCredentials: true }
       );
 
       if (response.status === 200) {
-        const data= getdata();
+        const data = getdata();
         callNoti({ message: "Login Successful", type: "valid" });
-        if (response.data.UserRole === "Admin"){
+        if (response.data.UserRole === "Admin") {
           navigate("/Admin");
-        } 
-        else{
+        } else {
           navigate("/");
           window.location.reload();
-        } 
+        }
       } else {
         setError("Wrong email or password");
       }
@@ -82,23 +82,28 @@ function Login() {
       setError("Login failed. Please check your credentials.");
     }
   }
-  
-      
-  // send the data to the backend for login 
-async function GoogleLoginOrSignup({ UserEmail, UserName }) {
+
+  // send the data to the backend for login
+  async function GoogleLoginOrSignup({ UserEmail, UserName }) {
   try {
+    console.log(UserEmail,UserName);
     const res = await axios.post(
       `${import.meta.env.VITE_BACKEND_API}/User/googleLogin`,
-      { UserEmail, UserName },{withCredentials: true}
+      { UserEmail, UserName },
+      { withCredentials: true }
     );
-
-    if (res.data) {
-      // set the data then navigate 
-      getdata();
-      navigate('/');
+    console.log("googleconsole",res);
+    if (res.status === 200) {
+      const data = getdata(); // make sure getdata() is defined
       callNoti({ message: "Login Successful", type: "valid" });
-    }
 
+      if (res.data.UserRole === "Admin") {
+        navigate("/Admin");
+      } else {
+        navigate("/");
+        window.location.reload();
+      }
+    }
   } catch (error) {
     callNoti({ message: "Login failed", type: "Notvalid" });
     console.error(error);
@@ -106,22 +111,22 @@ async function GoogleLoginOrSignup({ UserEmail, UserName }) {
 }
 
 
-
-const login = useGoogleLogin({
+  const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-
       // Fetch user profile from Google
       const res = await axios.get(
-  "https://www.googleapis.com/oauth2/v3/userinfo",
-  {
-    headers: {
-      Authorization: `Bearer ${tokenResponse.access_token}`,
-    },
-    withCredentials: true // ✅ now correctly included
-  }
-);
-     // store the data in the backend
-     GoogleLoginOrSignup({UserEmail:res.data.email,UserName:res.data.name});
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+          }
+        }
+      );
+      // store the data in the backend
+      GoogleLoginOrSignup({
+        UserEmail: res.data.email,
+        UserName: res.data.name,
+      });
     },
     onError: () => {
       console.log("Google Login Failed");
@@ -137,7 +142,8 @@ const login = useGoogleLogin({
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/ForgetPass`,
-        { UserEmail },{ withCredentials: true}
+        { UserEmail },
+        { withCredentials: true }
       );
 
       if (response.status === 200) {
@@ -164,7 +170,8 @@ const login = useGoogleLogin({
         `${import.meta.env.VITE_BACKEND_API}/User/ForgetCodeVerify`,
         {
           params: { UserEmail, code },
-        },{ withCredentials: true}
+        },
+        { withCredentials: true }
       );
       if (data.status == 200) {
         callNoti({ message: "Correct code", type: "valid" });
@@ -179,10 +186,14 @@ const login = useGoogleLogin({
 
   async function HandleResetPassword(UserEmail, newPassword) {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/ResetPassword`, {
-        UserEmail,
-        newPassword,
-      },{ withCredentials: true});
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/User/ResetPassword`,
+        {
+          UserEmail,
+          newPassword,
+        },
+        { withCredentials: true }
+      );
       if (res.status === 200) {
         callNoti({ message: "Password updated successfully", type: "valid" });
         setShowForgot(false);
