@@ -2,9 +2,9 @@ const UserModel = require('../Model/UserModel');
 
 async function UserData(req, resp) {
   try {
+    console.log('req at userdata',req.user.UserEmail);
     // extract UserEmail from query directly
-    const { UserEmail } = req.query;
-    console.log(UserEmail);
+    const { UserEmail } = req.user;
     // query the database
     const data = await UserModel.findOne({ UserEmail });
 

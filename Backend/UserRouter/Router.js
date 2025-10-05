@@ -27,8 +27,8 @@ const GoogleLogin=require('../UserFunction/GoogelLogin');
 const Validation=require('../UserFunction/Validation');
 
 
-Router.get('/SendMail',SendEmail);
-Router.get('/UserData',UserData);
+Router.get('/SendMail',verifyJWT,SendEmail);
+Router.get('/UserData',verifyJWT,UserData);
 // jwt realted work
 Router.post('/VerifyCode',Verifythecode);
 Router.post('/VerifyJWT',verifyJWT);
@@ -37,23 +37,23 @@ Router.post('/SignUp',SignUp);
 Router.post('/Login',Login); 
 
 
-Router.post('/WishListAddItem',Additemtowishlist);
-Router.post('/GetWishList',GetWishListItems);
-Router.post('/RemoveWishListItem',RemoveWishItems);
-Router.post('/AddToCard',AddItemToCard);
-Router.post('/UpdateData',userbackenddata);
-Router.post('/GetOrderData',SendCartData);
-Router.post('/RemoveItemFromCart',RemoveIteamFromCart);
-Router.post('/IncreaseCnt',IncreaseCnt);
-Router.post('/DecreaseCnt',DecreaseCnt);
-Router.post('/SendContact',SetContactInfo);
+Router.post('/WishListAddItem',verifyJWT,Additemtowishlist);
+Router.post('/GetWishList',verifyJWT,GetWishListItems);
+Router.post('/RemoveWishListItem',verifyJWT,RemoveWishItems);
+Router.post('/AddToCard',verifyJWT,AddItemToCard);
+Router.post('/UpdateData',verifyJWT,userbackenddata);
+Router.post('/GetOrderData',verifyJWT,SendCartData);
+Router.post('/RemoveItemFromCart',verifyJWT,RemoveIteamFromCart);
+Router.post('/IncreaseCnt',verifyJWT,IncreaseCnt);
+Router.post('/DecreaseCnt',verifyJWT,DecreaseCnt);
+Router.post('/SendContact',verifyJWT,SetContactInfo);
 
 // find and update the user 
-Router.post('/GetAndUpdateUser',GetAndUpdateUserOrderPlaced);
-Router.post('/ClearOrderListOfUser',ClearOrderListOfUser);
+Router.post('/GetAndUpdateUser',verifyJWT,GetAndUpdateUserOrderPlaced);
+Router.post('/ClearOrderListOfUser',verifyJWT,ClearOrderListOfUser);
 // orderedDetail
-Router.post('/AddOrderDetail',AddOrderDetail);
-Router.get('/PlacedOrderDetail',PlacedOrderDetail);
+Router.post('/AddOrderDetail',verifyJWT,AddOrderDetail);
+Router.get('/PlacedOrderDetail',verifyJWT,PlacedOrderDetail);
 
 // google router 
 Router.post('/googleLogin',GoogleLogin);
@@ -64,4 +64,16 @@ Router.post('/check',Validation);
 Router.post('/ForgetPass',HandleForgetPass);
 Router.get('/ForgetCodeVerify',VerifyForgetCode);
 Router.post('/ResetPassword',ResetPassword);
+
+
+// Logout
+Router.post("/Logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+   path: "/", 
+  });
+  res.status(200).json({ msg: "Logged out successfully" });
+});
 module.exports=Router;

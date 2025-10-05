@@ -2,8 +2,12 @@ const ProductModel = require('../Model/Productmodel');
 
 async function SendCartData(req, resp) {
   try {
+    console.log(req.body);
     const { OrderList } = req.body;  // [{ ProductId, Quantity }]
-    console.log(OrderList);
+
+    if(!OrderList){
+      return resp.status(404).json({msg:"not found"});
+    }
 
     // Extract ProductIds
     const productIds = OrderList.map(item => item.ProductId);

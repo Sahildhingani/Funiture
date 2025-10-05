@@ -2,8 +2,7 @@ const OrderDetailMode=require('../Model/OrderPlacedModel');
 
 async function GetPlacedOrderDetail(req, resp) {
   try {
-    const { UserEmail } = req.query;
-    console.log("Backend got:", UserEmail);
+   const UserEmail=req.user.UserEmail;
 
     const data = await OrderDetailMode.find({ UserEmail: UserEmail });
     console.log(data);

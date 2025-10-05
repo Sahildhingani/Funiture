@@ -21,7 +21,7 @@ function SendTheToken(user, resp) {
     );
 
     resp.cookie("token", token, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true, // must be true on HTTPS
       sameSite: "None", // required for cross-site
       maxAge: 60 * 60 * 1000, // 1 hour

@@ -7,7 +7,6 @@ const SECRET_KEY = process.env.JWT_SECRET;
 async function Login(req, resp) {
   try {
     const { UserEmail, UserPassword } = req.body;
-
     // 1. Check if user exists
     const user = await UserModel.findOne({ UserEmail });
     if (!user) {
@@ -37,10 +36,11 @@ async function Login(req, resp) {
 
     // 4. Set cookie
     resp.cookie("token", token, {
-      httpOnly: false,
-  secure: false,   // temporarily false for local dev (HTTPS not required)
-  sameSite: "Lax", // or "None" if cross-site
-  maxAge: 60 * 60 * 1000
+      httpOnly: true,
+      secure: true, 
+      sameSite: "none", // or "None" if cross-site
+       path: "/",
+      maxAge: 60 * 60 * 1000,
     });
     // 5. Final response
     return resp.status(200).json({

@@ -2,7 +2,9 @@ const UserModel = require('../Model/UserModel');
 
 async function GetAndUpdateUserOrderPlaced(req, resp) {
     try {
-        const { UserEmail, id } = req.body;
+        const { id } = req.body;
+        const UserEmail=req.user.UserEmail;
+        console.log("get and fupdate useer",req.body);
 
         const UserData = await UserModel.findOneAndUpdate(
             { UserEmail },                    // find user by email
