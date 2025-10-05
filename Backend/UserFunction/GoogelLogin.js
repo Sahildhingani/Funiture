@@ -23,7 +23,7 @@ function SendTheToken(user, resp) {
     resp.cookie("token", token, {
       httpOnly: true,
       secure: true, // must be true on HTTPS
-      sameSite: "None", // required for cross-site
+      sameSite: "none", // required for cross-site
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 
@@ -67,6 +67,7 @@ function generateRandomUserId(length = 8) {
 
 async function GoogleLogin(req, resp) {
   try {
+    console.log("reached the backne on google",req);
     const { UserEmail, UserName } = req.body;
     console.log(UserEmail);
     // Validate input
