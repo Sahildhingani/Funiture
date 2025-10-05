@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { Notify } from "../ContextApi/Context";
 import UserNotification from "./UserNotification";
 import AccountSetting from "./AccountSetting";
+import axios from "axios";
 
 function Settings({ close, setclose }) {
   const UserName = useSelector((s) => s.User.UserName);
@@ -24,14 +25,27 @@ function Settings({ close, setclose }) {
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
+ async function Logout() {
 
-  function Logout() {
-    document.cookie =
-      "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    localStorage.removeItem("token");
+  try {
+   const data= await axios.post(
+      `${import.meta.env.VITE_BACKEND_API}/User/Logout`,
+      {},
+      { withCredentials: true }
+    );
+
+    // Optional: clear localStorage too
     localStorage.removeItem("UserEmail");
-    window.location.href = "/";
+    localStorage.removeItem("token");
+    if(data){
+       navigate("/");
+       window.location.reload();
+    }
+  } catch (error) {
+    console.error("Logout failed:", error.response?.data || error.message);
   }
+}
+
 
   useEffect(() => {
     if (!UserEmail) {

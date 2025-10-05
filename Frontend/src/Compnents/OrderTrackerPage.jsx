@@ -13,7 +13,7 @@ function OrderTrackerPage() {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_API}/User/PlacedOrderDetail`,
-        { params: { UserEmail } },{withCredentials: true}
+        {withCredentials: true}
       );
       setOrderList(res.data.data || []);
     } catch (error) {

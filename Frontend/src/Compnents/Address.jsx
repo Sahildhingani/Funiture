@@ -35,7 +35,6 @@ function Address() {
   const [placing, setPlacing] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
-  const token = getCookie("token");
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [phone, setphone] = useState("");
@@ -45,7 +44,16 @@ function Address() {
   const UserEmail = useSelector((s) => s.User.UserEmail);
   const { dark } = useContext(Notify);
 
-  // Handle Cash on Delivery
+  async function UpdateUser({id}) {
+    try {
+      const UserData = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/GetAndUpdateUser`,
+        {id},{withCredentials: true});
+      if (UserData.status === 200) return UserData;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // Handle Cash on Delivery -- issue in this one check
   async function HandleCashOnDelivery(name, email, phone, address, items) {
     const orderItems = items.map((item) => ({
       ProductId: item.ProductId || item.productId,
@@ -65,8 +73,8 @@ function Address() {
 });
 
     if (data.status === 200) {
-      const id = data.data._id;
-      if (await UpdateUser(id) && await ClearTheOrderList(UserEmail)) {
+      const id = data.data.data._id;
+      if (await UpdateUser({id}) && await ClearTheOrderList(UserEmail)) {
         dispatch(ClearOrderList());
         setOrderPlaced(true);
         setTimeout(() => navigate("/OrderTracker"), 3000);
@@ -74,19 +82,7 @@ function Address() {
     }
   }
 
-  async function UpdateUser(id) {
-    try {
-      const UserData = await axios.post(`${import.meta.env.VITE_BACKEND_API}/User/GetAndUpdateUser`, {
-        UserEmail,
-        id,
-      },{
-  withCredentials: true
-});
-      if (UserData.status === 200) return UserData;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  
 
   async function ClearTheOrderList(UserEmail) {
     try {
@@ -101,12 +97,9 @@ function Address() {
     }
   }
 
-  async function GetUserDataBackend(tok) {
+  async function GetUserDataBackend() {
     try {
-      const { UserEmail } = await VerifyToken(tok);
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/User/UserData`, {
-        params: { UserEmail },
-      },{
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/User/UserData`,{
   withCredentials: true
 });
       return response.data.UserData.UserOrderes || [];
@@ -133,7 +126,7 @@ function Address() {
     (async () => {
       setLoading(true);
       try {
-        const userOrders = await GetUserDataBackend(token);
+        const userOrders = await GetUserDataBackend();
         setOrders(userOrders);
         const productData = await GetProductData(userOrders);
         setProducts(productData);
@@ -167,7 +160,7 @@ function Address() {
         setLoading(false);
       }
     })();
-  }, [token]);
+  }, []);
 
   const grandTotal = items.reduce((sum, it) => sum + (it.totalAmount || 0), 0);
 

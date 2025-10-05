@@ -22,17 +22,16 @@ function AdminNav() {
     { path: "/Admin/Order", label: "Order", icon: <ShoppingCart size={20} /> },
     { path: "/Admin/Payment", label: "Payment", icon: <CreditCard size={20} /> },
   ];
-
+  const Role=useSelector((s)=>s.User.UserRole);
   // get the token from the cookie
-  const token = getCookie("token");
   useEffect(() => {
-    async function gettoken(token) {
-      const data =await  VerifyToken(token);
-      if(data.UserRole!="Admin"){
+    async function gettoken() {
+     console.log("role:",Role);
+      if(Role!="Admin"){
         navigate('/');
       }
     }
-    gettoken(token);
+    gettoken();
   }, []);
 
   return (

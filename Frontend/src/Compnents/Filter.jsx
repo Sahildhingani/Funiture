@@ -12,7 +12,7 @@ function FilterSidebar({ array = [], setarray, layout = "vertical" }) {
   const { dark } = useContext(Notify);
 
   const MIN_PRICE = 0;
-  const MAX_PRICE = 200000;
+  const MAX_PRICE = 10000;
 
   // Compute unique brands
   const brands = useMemo(() => {

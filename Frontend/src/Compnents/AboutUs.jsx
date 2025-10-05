@@ -68,8 +68,8 @@ function AboutUs() {
         {/* Image Collage */}
         <div className="relative">
           <img
-            src="https://images.unsplash.com/photo-1600585154207-0a56f837c5d0?auto=format&fit=crop&w=800&q=80"
-            alt="Our Workshop"
+            src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80"
+            alt="Modern bright living room"
             className="rounded-2xl shadow-xl object-cover w-full h-[400px]"
             loading="lazy"
           />

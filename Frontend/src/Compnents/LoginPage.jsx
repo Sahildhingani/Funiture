@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Notify } from "../ContextApi/Context";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useSelector } from "react-redux";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +20,13 @@ function Login() {
 
   const navigate = useNavigate();
   const { callNoti } = useContext(Notify);
+  const UserEmail=useSelector((s)=>(s.User.UserEmail));
+  // check login
+  useEffect(() => {
+  if (UserEmail) {
+    navigate("/");
+  }
+}, [UserEmail, navigate]);
 
   useEffect(() => {
     if (showForgot) document.body.style.overflow = "hidden";
@@ -33,6 +41,20 @@ function Login() {
     return () => clearInterval(interval);
   }, [timer]);
 
+  async function GetUserDataBackend() {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_API}/User/UserData`,
+      {
+        withCredentials: true, // ✅ cookies will now be sent!
+      }
+    );
+    return response.data.UserData;
+  }
+
+   async function getdata() {
+        const data1 =  GetUserDataBackend();
+         dispatch(SetUserInfoComplete(data1));
+      }
   async function HandleLogin({ UserEmail, UserPassword }) {
     try {
       if (!UserEmail || !UserPassword) {
@@ -40,14 +62,19 @@ function Login() {
       }
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_API}/User/Login`,
-        { UserEmail, UserPassword },
-        { withCredentials: true}
+        { UserEmail, UserPassword },{withCredentials:true}
       );
 
       if (response.status === 200) {
+        const data= getdata();
         callNoti({ message: "Login Successful", type: "valid" });
-        if (response.data.UserRole === "Admin") navigate("/Admin");
-        else navigate("/");
+        if (response.data.UserRole === "Admin"){
+          navigate("/Admin");
+        } 
+        else{
+          navigate("/");
+          window.location.reload();
+        } 
       } else {
         setError("Wrong email or password");
       }
@@ -55,19 +82,19 @@ function Login() {
       setError("Login failed. Please check your credentials.");
     }
   }
-
-
+  
+      
   // send the data to the backend for login 
 async function GoogleLoginOrSignup({ UserEmail, UserName }) {
   try {
-    console.log(import.meta.env.VITE_BACKEND_API);
     const res = await axios.post(
       `${import.meta.env.VITE_BACKEND_API}/User/googleLogin`,
-      { UserEmail, UserName },
-      { withCredentials: true }
+      { UserEmail, UserName },{withCredentials: true}
     );
 
     if (res.data) {
+      // set the data then navigate 
+      getdata();
       navigate('/');
       callNoti({ message: "Login Successful", type: "valid" });
     }
